@@ -5,6 +5,7 @@ const session = require('express-session');
 const handlebars = require('express-handlebars');
 //initialize express
 const app = express();
+app.use(express.json());
 //get port from .env or default to 3001
 const PORT = process.env.PORT || 3001;
 //sequelize includes
@@ -23,7 +24,7 @@ const sess = {
 //handlebars
 app.set('view engine', 'handlebars');
 app.engine('handlebars', handlebars({
-    //layoutsDir: __dirname + '/views/layouts',
+
 }));
 app.use(express.static('public'))
 //sessions
