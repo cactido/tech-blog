@@ -3,6 +3,7 @@ const path = require('path');
 const express =  require('express');
 const session = require('express-session');
 const handlebars = require('express-handlebars');
+const helpers = require('./utils/helpers');
 //initialize express
 const app = express();
 app.use(express.json());
@@ -17,16 +18,13 @@ const sess = {
     cookie: {},
     resave: false,
     saveUninitialized: true,
-    store: new SequelizeStore({
-        db: sequelize
-    })
+    store: new SequelizeStore({ db: sequelize })
 };
 //handlebars
+const hbs = handlebars.create({ helpers });
 app.set('view engine', 'handlebars');
-app.engine('handlebars', handlebars({
-
-}));
-app.use(express.static('public'))
+app.engine('handlebars', hbs.engine);
+app.use(express.static('public'));
 //sessions
 app.use(session(sess));
 app.use(require('./controllers/'));

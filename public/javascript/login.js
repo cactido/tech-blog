@@ -11,8 +11,7 @@ async function login() {
         headers: { 'Content-Type': 'application/json' }
     });
     console.log(data);
-    if (!data.ok) { alert('Invalid username or password') }
-    else { window.location.replace('/') };
+    window.location.replace('/');
 }
 
 async function register() {

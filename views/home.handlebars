@@ -1,0 +1,62 @@
+<div class="col-12 bg-light bar">
+    <div class="my-4 mx-2" id="posts">
+        {{#each posts as |post|}}
+        <div class="post-box bg-light my-2">
+            <div class="row px-2">
+                <div class="col-12 my-2" id="post{{post.id}}">
+                    <h2>{{post.title}}</h2>
+                    <h5>{{post.user.username}}, {{format_date post.createdAt}}</h5>
+                    {{post.content}}
+                    <p></p>
+
+                    <div class="row">
+                        Total Comments: {{comments.length}}
+                        {{> comments post.comments}}
+                        {{#if ../loggedIn}}
+                        <div class="ms-auto me-4">
+                            <button class="btn btn-secondary mt-1" data-bs-toggle="collapse"
+                                data-bs-target="#addComment{{post.id}}" aria-expanded="true"
+                                aria-controls="addComment{{post.id}}">
+                                Add a Comment
+                            </button>
+                        </div>
+                        {{/if}}
+                    </div>
+                </div>
+                {{#if ../loggedIn}}
+                <div class="row">
+                    <div class="collapse mt-2" id="addComment{{post.id}}">
+                        <textarea class="form-control" id="commentText{{post.id}}" rows="1"></textarea>
+                        <button type="button" class="btn btn-outline-secondary mt-2"
+                            id="addComment:{{post.id}}">Comment</button>
+                    </div>
+                </div>
+                {{/if}}
+                <div class="row">
+                    <div class="collapse mt-2" id="comments{{post.id}}">
+                        {{> comments post.comments}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="collapse" id="post{{post.id}}">
+                    <div class="card card-body bg-silver">
+                        {{post.content}}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    {{/each}}
+</div>
+</div>
+
+<script src="./javascript/home.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+    crossorigin="anonymous"></script>

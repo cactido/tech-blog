@@ -1,0 +1,10 @@
+{{#each this}}
+<div class="row post-box bg-silver my-1">
+    <div class="col-12">
+        {{text}}
+        <br />
+        ({{user.username}}, {{format_date createdAt}})
+        <hr>
+    </div>
+</div>
+{{/each}}
