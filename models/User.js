@@ -43,7 +43,7 @@ User.init(
         timestamps: false,
         freezeTableName: true,
         modelName: 'user'
-    }    
+    }
 );
 
 module.exports = User;

@@ -1,6 +1,11 @@
 .navbar {
     margin-bottom: 0;
     border-radius: 0;
+    color: black;
+}
+
+.navbar a {
+    color: black
 }
 
 footer {

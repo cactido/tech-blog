@@ -3,7 +3,7 @@ const { User } = require('../../models');
 
 router.get('/', (req, res) => {
     User.findAll({
-        attributes: { exclude: ['password'] };
+        attributes: { exclude: ['password'] }
     })
     .then(data => res.json(data))
     .catch(err => { res.status(500).json(err); })
@@ -65,3 +65,79 @@ router.post('/signup', (req, res) => {
     })
     .catch(err => { res.status(500).json(err) })
 })
+
+router.post('/login', (req, res) => {
+    User.findOne({
+        where: { username: req.body.username }
+    })
+    .then(data => {
+        if (!data) { 
+            res.status(400).json({ message: 'User not found.' }); 
+            return;
+        }
+        //validate password with the checkPassword function of the User object
+        const validate = data.checkPassword(req.body.password);
+        //fail login if password is incorrect
+        if (!validate) { 
+            res.status(400).json({ message: 'Invalid password.' });
+            return;
+        }
+        //update session and return to root if password is valid
+        req.session.save(() => {
+            req.session.user_id = data.id;
+            req.session.username = data.username;
+            req.session.loggedIn = true;
+            res.redirect('/');
+            return;
+        });
+    })
+});
+
+router.post('/logout', (req, res) => {
+    if (req.session.loggedIn) {
+        req.session.destroy(() => {
+            res.redirect('/');
+            return;
+        })
+    }
+});
+
+router.put('/:id', (req, res) => {
+    //check session variables for logged-in state and redirects to root if not
+    if (!req.session.loggedIn) {
+        res.redirect('/');
+        return;
+    }
+    User.update({
+        where: { id: req.params.id }
+    })
+    .then(data => {
+        if (!data) { 
+            res.status(400).json({ message: 'User not found.' }); 
+            return;
+        }
+        res.json(data);
+    })
+    .catch(err => { res.status(500).json(err) })
+})
+
+router.delete('/:id', (req, res) => {
+    //check session variables for logged-in state and redirects to root if not
+    if (!req.session.loggedIn) {
+        res.redirect('/');
+        return;
+    }
+    User.destroy({
+        where: { id: req.params.id }
+    })
+    .then(data => {
+        if (!data) { 
+            res.status(400).json({ message: 'User not found.' }); 
+            return;
+        }
+        res.json(data);
+    })
+    .catch(err => { res.status(500).json(err) })
+})
+
+module.exports = router;

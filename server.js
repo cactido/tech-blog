@@ -2,7 +2,7 @@
 const path = require('path');
 const express =  require('express');
 const session = require('express-session');
-const exphbs = require('express-handlebars');
+const handlebars = require('express-handlebars');
 //initialize express
 const app = express();
 //get port from .env or default to 3001
@@ -20,7 +20,13 @@ const sess = {
         db: sequelize
     })
 };
-
+//handlebars
+app.set('view engine', 'handlebars');
+app.engine('handlebars', handlebars({
+    //layoutsDir: __dirname + '/views/layouts',
+}));
+app.use(express.static('public'))
+//sessions
 app.use(session(sess));
 app.use(require('./controllers/'));
 sequelize.sync({ force: false }).then(() => {
