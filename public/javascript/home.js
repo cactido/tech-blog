@@ -10,8 +10,8 @@ async function newComment(e) {
             alert('Please enter a comment before submitting.');
             return;
         }
-    } else if (target != undefined && commentBody != '') {
-        await fetch('/api/comment/', {
+    } else if (target != undefined && commentBody != undefined) {
+        const response = await fetch('/api/comment/', {
             method: 'post',
             body: JSON.stringify({
                 text: commentBody,

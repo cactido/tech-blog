@@ -1,7 +1,10 @@
 function buttonClickHandler(e) {
     e.preventDefault;
-    console.log(clicked);
+    console.log(e.target.id);
+    if (e.target.id === 'article-submit') { newPost() };
     const clicked = e.target.id.split(':');
+    console.log(clicked);
+    console.log(e.target.type);
     const action = clicked[0];
     const target = clicked[1];
     console.log(`action: ${action} | target: ${target}`);
@@ -19,7 +22,7 @@ function buttonClickHandler(e) {
 async function deletePost(target) {
     const confirmDelete = confirm('Really delete this post?');
     if (confirmDelete) {
-        await fetch('/api/post' + target, {
+        await fetch('/api/post/' + target, {
             method: 'delete',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -41,29 +44,29 @@ async function updatePost(target) {
     } else if (newTitle) { update = { title: newTitle } }
     else if (newBody) { update = { content: newBody } }
     else return;
-
+    console.log(`target: ${target}`);
     await fetch('/api/post/' + target, {
-        method: 'PUT',
+        method: 'put',
         body: JSON.stringify(update),
         headers: { 'Content-Type': 'application/json' }
     })
-    window.location.replace('dashboard');
+    window.location.replace('/dashboard');
 }
 
-function newPost(e) {
-    e.preventDefault;
-    const response = await fetch('/api/post', {
+async function newPost(e) {
+    const title = $('#article-title').val();
+    const content = $('#article-body').val();
+    console.log(`title: ${title} | content: ${content}`);
+    await fetch('/api/post', {
         method: 'post',
         body: JSON.stringify({
-            title: $('#article-title').val(),
-            content: $('#article-body').val()
+            title: title,
+            content: content
         }),
         headers: { 'Content-Type': 'application/json' }
     })
     window.location.replace('/dashboard');
 }
 
-// submit listener
-$('#new-post').on('submit', newPost);
-// delete/update button listener
+// button listener
 $('button').on('click', buttonClickHandler);
