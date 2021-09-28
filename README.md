@@ -1,4 +1,4 @@
-# tech-blog
+# Tech Blog
 
 ## Description
 A basic blog project which allows users to register, login/logout, post new blog articles, edit/delete existing articles or comment on existing articles.
